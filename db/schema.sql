@@ -1,17 +1,17 @@
 DROP DATABASE IF EXISTS department_db;
 CREATE DATABASE department_db;
 
-USE department_db
+USE department_db;
 
 CREATE TABLE department (
     id INT PRIMARY KEY NOT NULL,
-    name VARCHAR(30) NOT NULL,
+    name VARCHAR(30) NOT NULL
 );
 
 CREATE TABLE role (
     id INT PRIMARY KEY NOT NULL,
     title VARCHAR(30) NOT NULL,
-    salary DECIMAL(P,D),
+    salary DECIMAL,
     department_id INT NOT NULL
 );
 
@@ -21,4 +21,4 @@ CREATE TABLE employee (
     last_name VARCHAR(30) NOT NULL,
     role_id INT NOT NULL,
     manager_id INT NOT NULL
-)
+);
