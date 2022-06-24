@@ -8,14 +8,14 @@ CREATE TABLE department (
     name VARCHAR(30) NOT NULL,
 );
 
-CREATE TABLE role_db (
+CREATE TABLE role (
     id INT PRIMARY KEY NOT NULL,
     title VARCHAR(30) NOT NULL,
-    salary DECIMAL,
+    salary DECIMAL(P,D),
     department_id INT NOT NULL
 );
 
-CREATE TABLE employee_db (
+CREATE TABLE employee (
     id INT PRIMARY KEY NOT NULL,
     first_name VARCHAR(30) NOT NULL,
     last_name VARCHAR(30) NOT NULL,
