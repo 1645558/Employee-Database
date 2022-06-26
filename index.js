@@ -45,7 +45,7 @@ const fn = {
                 name: 'department'
             },
         ]).then(function({ name }) {
-            db.query('INSERT INTO department (name) VALUES ?', (name), function (err, results) {
+            db.query(`INSERT INTO department (name) VALUES ?`, 'name', function (err, results) {
                 if (err) throw err;
                 console.table(results);
             })
