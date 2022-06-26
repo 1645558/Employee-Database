@@ -38,16 +38,23 @@ const fn = {
         });
     },
     addDepartment() {
-        return inquirer.prompt([
-            {
-                type: 'input',
-                message: 'Please enter the department name',
-                name: 'department'
-            },
-        ]).then(function({ name }) {
-            db.query(`INSERT INTO department (name) VALUES ?`, 'name', function (err, results) {
-                if (err) throw err;
-                console.table(results);
+        db.connect(function (err) {
+            if (err) throw err;
+            console.log('Connected!');
+
+            let sql = 'INSERT INTO department (name) VALUES ?';
+
+            return inquirer.prompt([
+                {
+                    type: 'input',
+                    message: 'Please enter the department name',
+                    name: 'department'
+                },
+            ]).then(function ({ name }) {
+                db.query(sql, name, function (err, results) {
+                    if (err) throw err;
+                    console.table(results);
+                })
             })
         })
     },
