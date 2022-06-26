@@ -38,25 +38,25 @@ const fn = {
         });
     },
     addDepartment() {
-        db.connect(function (err) {
-            if (err) throw err;
-            console.log('Connected!');
-
-            let sql = 'INSERT INTO department (name) VALUES ?';
-
-            return inquirer.prompt([
-                {
-                    type: 'input',
-                    message: 'Please enter the department name',
-                    name: 'department'
-                },
-            ]).then(function ({ name }) {
-                db.query(sql, name, function (err, results) {
-                    if (err) throw err;
-                    console.table(results);
-                })
+        let sql1 = 'INSERT INTO department VALUES(?)';
+        inquirer.prompt([
+            {
+                type: 'input',
+                message: 'Please enter the department name',
+                name: 'DeptName'
+            },
+        ]).then(function (answer) {
+            db.query(sql1, {
+                name: answer.DeptName
+            });
+            let sql2 = 'SELECT * FROM department';
+            db.query(sql2, function(err, results) {
+                if (err) return console.err(err);
+                console.table(results);
+                return init();
             })
         })
+
     },
     exit() {
         process.exit();
