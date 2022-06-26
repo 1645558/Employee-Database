@@ -37,6 +37,20 @@ const fn = {
             return init();
         });
     },
+    addDepartment() {
+        return inquirer.prompt([
+            {
+                type: 'input',
+                message: 'Please enter the department name',
+                name: 'department'
+            },
+        ]).then(function({ name }) {
+            db.query('INSERT INTO department (name) VALUES ?', (name), function (err, results) {
+                if (err) throw err;
+                console.table(results);
+            })
+        })
+    },
     exit() {
         process.exit();
     },
@@ -47,7 +61,7 @@ const init = () => {
         { name: 'View all departments', value: 'showAllDepartments' },
         { name: 'View all roles', value: 'showAllRoles' },
         { name: 'View all employees', value: 'showAllEmployees' },
-        { name: 'Add a department', value: '' },
+        { name: 'Add a department', value: 'addDepartment' },
         { name: 'Add a role', value: '' },
         { name: 'Add an employee', value: '' },
         { name: 'Update an employee role', value: '' },
@@ -58,7 +72,7 @@ const init = () => {
         {
             type: 'rawlist',
             message: 'What would you like to do?',
-            name: 'init',
+            name: 'query',
             choices,
         }
     ]).then((answers) => fn[answers.query]());
