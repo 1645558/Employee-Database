@@ -44,14 +44,14 @@ const fn = {
 
 const init = () => {
     const choices = [
-        'View all departments',
-        'View all roles',
-        'View all employees',
-        'Add a department',
-        'Add a role',
-        'Add an employee',
-        'Update an employee role',
-        'Exit',
+        { name: 'View all departments', value: 'showAllDepartments' },
+        { name: 'View all roles', value: 'showAllRoles' },
+        { name: 'View all employees', value: 'showAllEmployees' },
+        { name: 'Add a department', value: ''},
+        { name: 'Add a role', value: ''},
+        { name: 'Add an employee', value: '' },
+        { name: 'Update an employee role', value: '' },
+        { name: 'Exit', value: 'exit' },
     ];
 
     inquirer.prompt([
