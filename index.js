@@ -101,9 +101,20 @@ const fn = {
                         if (err) return console.error(err);
                         console.table(results);
                         return init();
-                    }
-                )
+                    })
             })
+        })
+    },
+    addEmployee() {
+        db.query('SELECT * FROM role', function (err, result) {
+            if (err) return console.err(err);
+
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    
+                }
+            ])
         })
     },
     exit() {
