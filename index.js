@@ -57,6 +57,38 @@ const fn = {
             })
         })
     },
+    addRole() {
+        db.query('SELECT * FROM department', function (err, result) {
+            if (err) return console.err(err);
+
+            inquirer.prompt([
+                {
+                    type: 'input',
+                    message: 'Please enter a role',
+                    name: 'newRole'
+                },
+                {
+                    type: 'input',
+                    message: 'Please enter the salary for the role',
+                    name: 'roleSalary'
+                },
+                {
+                    type: 'rawlist',
+                    message: 'Please choose a department',
+                    name: 'deptList',
+                    choices: function() {
+                        let deptArray = [];
+                        for (let i = 0; i < result.length; i++) {
+                            deptArray.push(result[i].name);
+                        }
+                        return deptArray;
+                    }
+                }
+            ]).then(function (answer) {
+                
+            })
+        })
+    },
     exit() {
         process.exit();
     },
