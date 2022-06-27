@@ -58,7 +58,7 @@ const fn = {
         })
     },
     addRole() {
-        db.query('SELECT * FROM department', function (err, result) {
+        db.query('SELECT * FROM department', function (err, results) {
             if (err) return console.err(err);
 
             inquirer.prompt([
@@ -76,16 +76,33 @@ const fn = {
                     type: 'rawlist',
                     message: 'Please choose a department',
                     name: 'deptList',
-                    choices: function() {
+                    choices: function () {
                         let deptArray = [];
-                        for (let i = 0; i < result.length; i++) {
-                            deptArray.push(result[i].name);
+                        for (let i = 0; i < results.length; i++) {
+                            deptArray.push(results[i].name);
                         }
                         return deptArray;
                     }
                 }
             ]).then(function (answer) {
-                
+                let department_id;
+                for (i = 0; i < results.length; i++) {
+                    if (results[i].name === answer.deptList) {
+                        department_id = results[i].id;
+                    }
+                }
+                db.query('INSERT INTO department role SET ?',
+                    {
+                        name: answer.newRole,
+                        salary: answer.roleSalary,
+                        id: department_id
+                    },
+                    function (err, results) {
+                        if (err) return console.error(err);
+                        console.table(results);
+                        return init();
+                    }
+                )
             })
         })
     },
@@ -100,7 +117,7 @@ const init = () => {
         { name: 'View all roles', value: 'showAllRoles' },
         { name: 'View all employees', value: 'showAllEmployees' },
         { name: 'Add a department', value: 'addDepartment' },
-        { name: 'Add a role', value: '' },
+        { name: 'Add a role', value: 'addRole' },
         { name: 'Add an employee', value: '' },
         { name: 'Update an employee role', value: '' },
         { name: 'Exit', value: 'exit' },
