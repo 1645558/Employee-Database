@@ -45,7 +45,7 @@ const fn = {
                 name: 'DeptName'
             },
         ]).then(function (answer) {
-            let sql1 = `INSERT INTO department (name) VALUES(?)`;
+            let sql1 = `INSERT INTO department SET ?`;
             db.query(sql1, {
                 name: answer.DeptName
             });
