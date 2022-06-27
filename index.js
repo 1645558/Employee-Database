@@ -91,11 +91,11 @@ const fn = {
                         department_id = results[i].id;
                     }
                 }
-                db.query('INSERT INTO department role SET ?',
+                db.query('INSERT INTO role SET ?',
                     {
-                        name: answer.newRole,
+                        title: answer.newRole,
                         salary: answer.roleSalary,
-                        id: department_id
+                        department_id: department_id
                     },
                     function (err, results) {
                         if (err) return console.error(err);
