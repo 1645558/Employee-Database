@@ -38,7 +38,6 @@ const fn = {
         });
     },
     addDepartment() {
-        let sql1 = 'INSERT INTO department VALUES(?)';
         inquirer.prompt([
             {
                 type: 'input',
@@ -46,17 +45,17 @@ const fn = {
                 name: 'DeptName'
             },
         ]).then(function (answer) {
+            let sql1 = `INSERT INTO department (name) VALUES(?)`;
             db.query(sql1, {
                 name: answer.DeptName
             });
             let sql2 = 'SELECT * FROM department';
-            db.query(sql2, function(err, results) {
+            db.query(sql2, function (err, results) {
                 if (err) return console.err(err);
                 console.table(results);
                 return init();
             })
         })
-
     },
     exit() {
         process.exit();

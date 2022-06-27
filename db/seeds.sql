@@ -1,8 +1,9 @@
-INSERT INTO department (id, name)
-VALUES (001, 'Derek');
+INSERT INTO department (name)
+VALUES ('IT'),
+('Sales')
 
-INSERT INTO role (id, title, salary, department_id)
-VALUES (002, 'Engineer', 120.000, 12);
+INSERT INTO role (title, salary, department_id)
+VALUES ('Engineer', 120.000, 12);
 
-INSERT INTO employee (id, first_name, last_name, role_id, manager_id)
-VALUES (003, 'George', 'Hendy', 33, 44);
+INSERT INTO employee (first_name, last_name, role_id, manager_id)
+VALUES ('George', 'Hendy', 33, 44);
