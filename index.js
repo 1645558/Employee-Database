@@ -160,25 +160,47 @@ const fn = {
         })
     },
     updateEmployee() {
-        db.query('SELECT role.id, role.title FROM role ORDER BY role.id;', function (err, results) {
+        db.query('SELECT * FROM role', function (err) {
             if (err) return console.err(err);
+            
+            let sql_query = 'SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id';
+            db.query(sql_query, function (err, results) {
+                if (err) return console.err(err);
 
-            inquirer.prompt([
-                {
-                    type: 'rawlist',
-                    message: 'Please select an employee',
-                    name: 'updateRole',
-                    choices: function () {
-                        
-                    }
-                },
-                {
-                    type: 'input',
-                    message: 'Please enter their new role',
-                    name: 'newRole'
+                    inquirer.prompt([
+                        {
+                            type: 'rawlist',
+                            message: 'Please select an employee',
+                            name: 'updateRole',
+                            choices: function () {
+                                let firstName = [];
+                                for (let i = 0; i < results.length; i++ ) {
+                                    firstName.push(results[i].first_name);
+                                }
+                                return firstName;
+                            }
+                        },
+                        {
+                            type: 'rawlist',
+                            message: 'Please enter their new role',
+                            name: 'newRole',
+                            choices: function () {
+                                let employeeArray = [];
+                                for (let i = 0; i < results.length; i++) {
+                                    employeeArray.push(results[i].title);
+                                }
+                                return employeeArray;
+                            }
+                        }
+                    ]).then(function (answer) {
+                        let roleId = employeeArray[i].answer.role
+                    })
                 }
-            ])
+            )
+            
+            
         })
+        return employeeArray;
     },
     exit() {
         process.exit();
