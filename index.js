@@ -160,7 +160,25 @@ const fn = {
         })
     },
     updateEmployee() {
+        db.query('SELECT role.id, role.title FROM role ORDER BY role.id;', function (err, results) {
+            if (err) return console.err(err);
 
+            inquirer.prompt([
+                {
+                    type: 'rawlist',
+                    message: 'Please select an employee',
+                    name: 'updateRole',
+                    choices: function () {
+                        
+                    }
+                },
+                {
+                    type: 'input',
+                    message: 'Please enter their new role',
+                    name: 'newRole'
+                }
+            ])
+        })
     },
     exit() {
         process.exit();
