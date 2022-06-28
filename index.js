@@ -82,7 +82,7 @@ const fn = {
                             deptArray.push(results[i].name);
                         }
                         return deptArray;
-                    }
+                    },
                 }
             ]).then(function (answer) {
                 let department_id;
@@ -106,16 +106,61 @@ const fn = {
         })
     },
     addEmployee() {
-        db.query('SELECT * FROM role', function (err, result) {
+        db.query('SELECT * FROM role', function (err, results) {
             if (err) return console.err(err);
 
             inquirer.prompt([
                 {
                     type: 'input',
-                    
+                    message: 'Please enter the employees first name',
+                    name: 'firstName'
+                },
+                {
+                    type: 'input',
+                    message: 'Please enter the employees last name',
+                    name: 'lastName'
+                },
+                {
+                    type: 'input',
+                    message: 'Please enter the managers ID',
+                    name: 'manId'
+                },
+                {
+                    type: 'rawlist',
+                    message: 'Please enter the employees role',
+                    name: 'empRole',
+                    choices: function () {
+                        let roleArray = [];
+                        for (let i = 0; i < results.length; i++) {
+                            roleArray.push(results[i].title);
+                        }
+                        return roleArray;
+                    },
                 }
-            ])
+            ]).then(function (answer) {
+                let role_id;
+                for (let i = 0; i < results.length; i++) {
+                    if (results[i].title === answer.empRole) {
+                        role_id = results[i].id;
+                    }
+                }
+                db.query('INSERT INTO employee SET ?',
+                    {
+                        first_name: answer.firstName,
+                        last_name: answer.lastName,
+                        manager_id: answer.manId,
+                        role_id: role_id,
+                    },
+                    function (err, results) {
+                        if (err) return console.error(err);
+                        console.table(results);
+                        return init();
+                    })
+            })
         })
+    },
+    updateEmployee() {
+
     },
     exit() {
         process.exit();
@@ -129,8 +174,8 @@ const init = () => {
         { name: 'View all employees', value: 'showAllEmployees' },
         { name: 'Add a department', value: 'addDepartment' },
         { name: 'Add a role', value: 'addRole' },
-        { name: 'Add an employee', value: '' },
-        { name: 'Update an employee role', value: '' },
+        { name: 'Add an employee', value: 'addEmployee' },
+        { name: 'Update an employee role', value: 'updateEmployee' },
         { name: 'Exit', value: 'exit' },
     ];
 
