@@ -1,10 +1,6 @@
 const inquirer = require('inquirer');
 const mysql = require('mysql2');
 require('console.table');
-const Department = require('./lib/department');
-const Role = require('./lib/role');
-const Employee = require('./lib/employee');
-
 
 //establish connection with mysql
 const db = mysql.createConnection(
@@ -13,6 +9,17 @@ const db = mysql.createConnection(
         database: 'department_db'
     },
 );
+
+let employeeArray = [];
+function getRole() {
+    db.query('SELECT * FROM role', function (err, results) {
+        if (err) return console.err(err);
+        for (let i = 0; i < results.length; i++) {
+            employeeArray.push(results[i].title);
+        }
+    });
+    return employeeArray;
+};
 
 //query requests information from mysql database, executes SELECT * and grabs the results from it
 const fn = {
@@ -160,47 +167,45 @@ const fn = {
         })
     },
     updateEmployee() {
-        db.query('SELECT * FROM role', function (err) {
+        let sql_query = 'SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id';
+        db.query(sql_query, function (err, results) {
             if (err) return console.err(err);
-            
-            let sql_query = 'SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id';
-            db.query(sql_query, function (err, results) {
-                if (err) return console.err(err);
 
-                    inquirer.prompt([
-                        {
-                            type: 'rawlist',
-                            message: 'Please select an employee',
-                            name: 'updateRole',
-                            choices: function () {
-                                let firstName = [];
-                                for (let i = 0; i < results.length; i++ ) {
-                                    firstName.push(results[i].first_name);
-                                }
-                                return firstName;
-                            }
-                        },
-                        {
-                            type: 'rawlist',
-                            message: 'Please enter their new role',
-                            name: 'newRole',
-                            choices: function () {
-                                let employeeArray = [];
-                                for (let i = 0; i < results.length; i++) {
-                                    employeeArray.push(results[i].title);
-                                }
-                                return employeeArray;
-                            }
+            inquirer.prompt([
+                {
+                    type: 'rawlist',
+                    message: 'Please select an employee',
+                    name: 'updateRole',
+                    choices: function () {
+                        let firstName = [];
+                        for (let i = 0; i < results.length; i++) {
+                            firstName.push(results[i].first_name);
                         }
-                    ]).then(function (answer) {
-                        let roleId = employeeArray[i].answer.role
+                        return firstName;
+                    }
+                },
+                {
+                    type: 'rawlist',
+                    message: 'Please enter their new role',
+                    name: 'newRole',
+                    choices: getRole()
+                },
+            ]).then(function (answers) {
+                let roleId = getRole().indexOf(answers.role)
+                db.query('UPDATE employee SET WHERE ?',
+                    {
+                        first_name: answers.firstName
+                    },
+                    {
+                        role_id: roleId
+                    },
+                    function (err) {
+                        if (err) return console.err(err);
+                        console.table(answers)
+                        return init();
                     })
-                }
-            )
-            
-            
-        })
-        return employeeArray;
+            });
+        });
     },
     exit() {
         process.exit();
