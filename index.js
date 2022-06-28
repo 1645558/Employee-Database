@@ -174,7 +174,7 @@ const fn = {
     },
     //updates employee role
     updateEmployee() {
-        let sql_query = 'SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id';
+        let sql_query = 'SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id;';
         db.query(sql_query, function (err, results) {
             if (err) return console.err(err);
 
@@ -198,7 +198,7 @@ const fn = {
                     choices: getRole()
                 },
             ]).then(function (answers) {
-                let roleId = getRole().indexOf(answers.role)
+                let roleId = getRole().indexOf(answers.newRole)
                 db.query('UPDATE employee SET WHERE ?',
                     {
                         first_name: answers.firstName
