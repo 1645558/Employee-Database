@@ -23,6 +23,7 @@ function getRole() {
 
 //query requests information from mysql database, executes SELECT * and grabs the results from it
 const fn = {
+    //displays all departments
     showAllDepartments() {
         db.query('SELECT * FROM department', function (err, results) {
             if (err) return console.err(err);
@@ -30,6 +31,7 @@ const fn = {
             return init();
         });
     },
+    //displays all roles
     showAllRoles() {
         db.query('SELECT * FROM role', function (err, results) {
             if (err) return console.err(err);
@@ -37,6 +39,7 @@ const fn = {
             return init();
         });
     },
+    //displays all employees
     showAllEmployees() {
         db.query('SELECT * FROM employee', function (err, results) {
             if (err) return console.err(err);
@@ -44,6 +47,7 @@ const fn = {
             return init();
         });
     },
+    //adds a department to the department table
     addDepartment() {
         inquirer.prompt([
             {
@@ -64,6 +68,7 @@ const fn = {
             })
         })
     },
+    //adds a role to the role table
     addRole() {
         db.query('SELECT * FROM department', function (err, results) {
             if (err) return console.err(err);
@@ -112,6 +117,7 @@ const fn = {
             })
         })
     },
+    //adds an employee to the employee table
     addEmployee() {
         db.query('SELECT * FROM role', function (err, results) {
             if (err) return console.err(err);
@@ -166,6 +172,7 @@ const fn = {
             })
         })
     },
+    //updates employee role
     updateEmployee() {
         let sql_query = 'SELECT employee.first_name, role.title FROM employee JOIN role ON employee.role_id = role.id';
         db.query(sql_query, function (err, results) {
@@ -212,6 +219,7 @@ const fn = {
     },
 };
 
+//initializer
 const init = () => {
     const choices = [
         { name: 'View all departments', value: 'showAllDepartments' },
